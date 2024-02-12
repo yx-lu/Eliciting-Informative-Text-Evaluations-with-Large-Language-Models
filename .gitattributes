@@ -1,2 +1,2 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+yelp_review_restaurant.json filter=lfs diff=lfs merge=lfs -text
+**/yelp_review_restaurant.json filter=lfs diff=lfs merge=lfs -text
