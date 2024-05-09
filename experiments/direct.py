@@ -14,13 +14,13 @@ parser = argparse.ArgumentParser()
 
 # which context, see folder '../openreview/' for openreview and '../yelp/' for yelp
 parser.add_argument("--context", type=str, required=True)
-# which dataset, use 'rl' for openreview and 'pizza' for yelp.
+# which dataset, use 'rand' for openreview and 'restaurant' for yelp.
 parser.add_argument("--dataset", type=str, required=True)
 # which model, 'gpt4' always works, try 'gpt35' for cheaper api call
 parser.add_argument("--model", type=str, required=True)
 # which prompt, always use 'bullet'
 parser.add_argument("--prompt", type=str, required=True)
-# which task, for experiment: 'experiment_same_diff_item' or 'experiment_one_side_degrade', and for others 'train', etc
+# which task, for experiment: 'experiment_same_diff_item' / 'experiment_one_side_degrade' / 'experiment_llm_gen_review' / 'experiment_bad_llm_review'
 parser.add_argument("--task", type=str, required=True)
 # whether conditioning on catagory / paper
 parser.add_argument("--conditional", action='store_true')
@@ -202,7 +202,7 @@ def experiment(experiment_id):
     elif args.context == "openreview" and (experiment_id == "experiment_llm_gen_review" or experiment_id == "experiment_bad_llm_review"):
         num_samples = 500
     else:
-        num_samples = 1000
+        num_samples = 500
 
     # [[ generate review indices]]
 

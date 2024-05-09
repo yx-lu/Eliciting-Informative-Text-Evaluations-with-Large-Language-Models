@@ -35,9 +35,7 @@ def setup_logger(logger: logging.Logger, debug_mode: bool, log_file: Optional[st
     else:
         level = logging.INFO
     logger.setLevel(level)
-    formatter = logging.Formatter(
-        "--------%(asctime)s-%(name)s[line:%(lineno)d]-%(levelname)s--------\n%(message)s"
-    )
+    formatter = logging.Formatter("--------%(asctime)s-%(name)s[line:%(lineno)d]-%(levelname)s--------\n%(message)s")
     console_handler = logging.StreamHandler()
     console_handler.setFormatter(formatter)
     console_handler.setLevel(level)
@@ -59,18 +57,15 @@ def get_log_prob():
         logger.info("Text: {}".format(text))
         res = llama2_wrapper.chat_completion(
             [text],
-            max_gen_len=1024, # no use
+            max_gen_len=1024,  # no use
             temperature=0.0,  # no use
-            top_p=1.0,        # no use
-            return_prob=True
-        )
+            top_p=1.0,  # no use
+            return_prob=True)
         logger.info("Token Length: {}".format(len(res["tokenized_tokens"])))
     else:
         tokenized_res = tokenizer(text, return_tensors="pt")
         input_ids = tokenized_res["input_ids"][0]
-        tokenized_tokens = tokenizer.convert_ids_to_tokens(
-            tokenized_res["input_ids"][0]
-        )
+        tokenized_tokens = tokenizer.convert_ids_to_tokens(tokenized_res["input_ids"][0])
         output_log_probs = model(**tokenized_res).logits[0].cpu()
         output_log_probs = torch.log(torch.softmax(output_log_probs, dim=-1))
         input_ids = input_ids[1:]
@@ -130,12 +125,12 @@ def generate():
 parser = argparse.ArgumentParser()
 parser.add_argument("--log-file", default="serve_logs/log.txt")
 parser.add_argument("--port", type=int, default=55055)
-parser.add_argument("--model", type=str, default="01-ai/Yi-6B-200K")
+parser.add_argument("--model", type=str, default="llama2-70b-chat")
 args = parser.parse_args()
 setup_logger(logger, True, args.log_file)
 if args.model == "llama2-70b-chat":
     llama2_wrapper = Llama2Wrapper(
-        "../../hg-models/llama-2-70b-chat-hf",
+        "../llama-2-70b-chat-hf",
         is_chat_model=True,
         debug_mode=True,
         load_4bit=True,

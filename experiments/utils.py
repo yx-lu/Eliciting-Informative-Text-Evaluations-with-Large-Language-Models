@@ -28,7 +28,8 @@ openrouter_chat = openrouter_client.chat.completions
 additional_key = ['Your Key', 'Your Key', 'Your Key', 'Your Key', 'Your Key', 'Your Key', 'Your Key', 'Your Key']
 additional_openrouter_chat = [openai.OpenAI(base_url="https://openrouter.ai/api/v1", api_key=additional_key[i]).chat.completions for i in range(8)]
 
-# enc = tiktoken.get_encoding("cl100k_base")
+api_option = "openrouter"  # "openai" or "openrouter"
+
 cache_lock = threading.Lock()  # lock to keep the cache operations safe
 
 
@@ -117,8 +118,6 @@ def simple_call_api(system_text, user_text, model, max_tokens=2000, temperature=
     max_token: int, maximum amout of output tokens
     use_cache: bool, true if try to load the output in cache 
     '''
-
-    api_option = "openrouter"  # openrouter is always better if you do not need logprob
 
     if api_option == "openrouter":
         compl = openrouter_chat if use_additional_key == -1 else additional_openrouter_chat[use_additional_key]
